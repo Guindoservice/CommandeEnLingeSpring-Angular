@@ -1,14 +1,11 @@
 package com.example.cmd.model;
 
-
-import com.example.cmd.model.RoleType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@MappedSuperclass
 @Entity
 @Table(name = "UTILISATEUR")
 @NoArgsConstructor
@@ -16,7 +13,6 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +20,17 @@ public class Utilisateur {
     private String username;
     private String motDePasse;
 
-    @Enumerated(EnumType.STRING)
-    private RoleType role;
+    @ManyToOne
+    @JoinColumn(name = "id_role")
+    private RoleType roleType;
 
-    public Utilisateur(String username, String motDePasse, RoleType role) {
+    public Utilisateur(String username, String motDePasse, RoleType roleType) {
         this.username = username;
         this.motDePasse = motDePasse;
-        this.role = role;
+        this.roleType = roleType;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
     }
 }

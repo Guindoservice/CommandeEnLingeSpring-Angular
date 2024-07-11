@@ -1,6 +1,5 @@
 package com.example.cmd.config;
 
-
 import com.example.cmd.model.Utilisateur;
 import com.example.cmd.repository.UtilisateurRepository;
 import org.springframework.security.core.userdetails.User;
@@ -33,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(utilisateur.getUsername())
                 .password(utilisateur.getMotDePasse())
-                .roles(utilisateur.getRole().name())
+                .authorities(utilisateur.getRoleType().getNom())  // Utilisez authorities pour les rôles
                 .build();
     }
 }

@@ -16,27 +16,26 @@ public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nom;
     private String description;
     private Float prix;
     private Float quantite;
-    LocalDate date = LocalDate.now();
+    private LocalDate date = LocalDate.now();
+
+    // Supprimé la colonne id_utilisateur
+    // @ManyToOne
+    // @JoinColumn(name = "id_utilisateur")
+    // private Utilisateur utilisateur;
 
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
-
-    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "id_categorie")
     private Categorie categorie;
 
-
-
-    public Produit(String description, Categorie categorie, Float prix, Float quantite, Utilisateur utilisateur) {
+    public Produit(String nom, String description, Categorie categorie, Float prix, Float quantite) {
+        this.nom = nom;
         this.description = description;
         this.categorie = categorie;
         this.prix = prix;
         this.quantite = quantite;
-        this.utilisateur = utilisateur;
     }
-
-
 }

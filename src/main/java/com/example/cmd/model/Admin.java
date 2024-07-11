@@ -18,10 +18,11 @@ public class Admin extends Utilisateur {
 
     public Admin() {}
 
-    public Admin(String username, String motDePasse) {
-        super(username, motDePasse, RoleType.ADMIN);
+    public Admin(String username, String motDePasse, RoleType roletype){
+        super(username, motDePasse, roletype);
 
     }
 
 
 }
+

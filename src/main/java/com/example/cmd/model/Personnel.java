@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+@Getter
+@Setter
 @Table(name="PERSONNEL")
 @Entity
 @NoArgsConstructor
 @Data
 public class Personnel extends Utilisateur {
-    public Personnel(String username, String motDePasse) {
-        super(username, motDePasse, RoleType.PERSONNEL);
+    public Personnel(String username, String motDePasse, RoleType roletype){
+        super(username, motDePasse, roletype);
     }
 }

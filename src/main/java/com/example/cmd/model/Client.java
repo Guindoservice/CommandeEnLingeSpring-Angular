@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Data
 public class Client extends Utilisateur {
-    public Client (String username, String motDePasse) {
-        super(username, motDePasse, RoleType.CLIENT);
+    public Client(String username, String motDePasse, RoleType roletype){
+        super(username, motDePasse, roletype);
     }
 
 

@@ -1,7 +1,9 @@
 package com.example.cmd.service;
 
 import com.example.cmd.model.*;
+import com.example.cmd.repository.CategorieRepository;
 import com.example.cmd.repository.ProduitRepository;
+import com.example.cmd.repository.RoleRepository;
 import com.example.cmd.repository.UtilisateurRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -17,46 +19,87 @@ import java.util.List;
 @Setter
 @Service
 @AllArgsConstructor
-
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ProduitRepository produitRepository;
+    private final CategorieRepository categorieRepository;
+    private final RoleRepository roleRepository;
 
 
-    /**
-     * @param personnel
-     * @return
-     */
     @Override
-    public String ajouterPersonnel(Personnel personnel) {
-        personnel.setRole(RoleType.PERSONNEL);
-        personnel.setMotDePasse(passwordEncoder.encode(personnel.getMotDePasse()));
-        //formateur.setMotDePasse("{noop}" + formateur.getMotDePasse());
-        utilisateurRepository.save(personnel);
-        return " Nouveau formateur ajouter avec succes!!";
+    public String ajouterRoleType(RoleType roleType) {
+        roleRepository.save(roleType);
+        return "Role ajouté avec succès!";
     }
 
-    /**
-     * @param client
-     * @return
-     */
+    @Override
+    public String modifierRoleType(Long id, RoleType roleTypeDetails) {
+        return roleRepository.findById(id)
+                .map(roleType -> {
+                    roleType.setNom(roleTypeDetails.getNom());
+                    roleRepository.save(roleType);
+                    return "Role modifié avec succès!";
+                }).orElseThrow(() -> new RuntimeException("Role n'existe pas"));
+    }
+
+    @Override
+    public String supprimerRoleType(Long id) {
+        roleRepository.deleteById(id);
+        return "Role supprimé avec succès!";
+    }
+
+    @Override
+    public List<RoleType> lireRoleTypes() {
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public String ajouterCategorie(Categorie categorie) {
+        categorieRepository.save(categorie);
+        return "Categorie ajoutée avec succès!";
+    }
+
+    @Override
+    public String modifierCategorie(Long id, Categorie categorieDetails) {
+        return categorieRepository.findById(id)
+                .map(categorie -> {
+                    categorie.setNom(categorieDetails.getNom());
+                    categorieRepository.save(categorie);
+                    return "Categorie modifiée avec succès!";
+                }).orElseThrow(() -> new RuntimeException("Categorie n'existe pas"));
+    }
+
+    @Override
+    public String supprimerCategorie(Long id) {
+        categorieRepository.deleteById(id);
+        return "Categorie supprimée avec succès!";
+    }
+
+    @Override
+    public List<Categorie> lireCategories() {
+        return categorieRepository.findAll();
+    }
+
+
+    @Override
+    public String ajouterPersonnel(Personnel personnel) {
+        // personnel.setRoleType(RoleType.PERSONNEL);
+        personnel.setMotDePasse(passwordEncoder.encode(personnel.getMotDePasse()));
+        utilisateurRepository.save(personnel);
+        return "Nouveau formateur ajouté avec succès!";
+    }
+
     @Transactional
     @Override
     public String ajouterClient(Client client) {
-
-        client.setRole(RoleType.CLIENT);
+        //client.setRoleType(RoleType.CLIENT);
         client.setMotDePasse(passwordEncoder.encode(client.getMotDePasse()));
-        //apprenant.setMotDePasse("{noop}" + apprenant.getMotDePasse());
         utilisateurRepository.save(client);
-        return "Nouveau client ajouter avec succes!";
+        return "Nouveau client ajouté avec succès!";
     }
 
-    /**
-     * @param adminDetails
-     * @return
-     */
     @Override
     public String modifierAdmin(Long id, Admin adminDetails) {
         Admin admin = (Admin) utilisateurRepository.findById(id)
@@ -64,40 +107,56 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         admin.setUsername(adminDetails.getUsername());
         admin.setMotDePasse(passwordEncoder.encode(adminDetails.getMotDePasse()));
-        admin.setRole(RoleType.ADMIN);
+        //admin.setRoleType(RoleType.ADMIN);
 
         utilisateurRepository.save(admin);
-        return "Admin modifier avec succes!";
+        return "Admin modifié avec succès!";
     }
 
-    /**
-     * @return
-     */
+    @Override
+    public String modifierPersonnel(Long id, Personnel personnelDetails) {
+        return utilisateurRepository.findById(id)
+                .map(personnel -> {
+                    personnel.setUsername(personnelDetails.getUsername()); // Correction ici
+                    personnel.setMotDePasse(passwordEncoder.encode(personnelDetails.getMotDePasse())); // Correction ici
+                    utilisateurRepository.save(personnel);
+                    return "Personnel modifié avec succès!";
+                }).orElseThrow(() -> new RuntimeException("Personnel n'existe pas"));
+    }
+
     @Transactional
     @Override
     public List<Utilisateur> lireUtilisateurs() {
         return utilisateurRepository.findAll();
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Transactional
     @Override
     public String supprimerUtilisateur(Long id) {
         utilisateurRepository.deleteById(id);
-        return "utilisateur supprimer!!!";
+        return "Utilisateur supprimé!!!";
     }
-    /**
-     * @param produit
-     * @return
-     */
+
     @Transactional
     @Override
     public String ajouterProduit(Produit produit) {
         produitRepository.save(produit);
-        return "Produit ajouter avec succes!";
+        return "Produit ajouté avec succès!";
+    }
+
+    @Override
+    public String modifierProduit(Long id, Produit produitDetails) {
+        return produitRepository.findById(id)
+                .map(produit -> {
+                    produit.setNom(produitDetails.getNom());
+                    produit.setPrix(produitDetails.getPrix());
+                    produit.setDescription(produitDetails.getDescription());
+                    produit.setQuantite(produitDetails.getQuantite());
+                    produit.setCategorie(produitDetails.getCategorie());
+
+                    produitRepository.save(produit);
+                    return "Produit modifié avec succès!";
+                }).orElseThrow(() -> new RuntimeException("Produit n'existe pas"));
     }
 
     @Override
@@ -108,22 +167,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public String supprimerProduit(Long id) {
         produitRepository.deleteById(id);
-        return "Produit supprimer!!!";
+        return "Produit supprimé!!!";
     }
-
-    /**
-     * @return
-     */
-
-
-
 
     @PostConstruct
     public void initAdmin() {
-        List<Utilisateur> admins = utilisateurRepository.findByRole(RoleType.ADMIN);
+        // Vérifier si le rôle ADMIN existe, sinon le créer
+        RoleType adminRole = roleRepository.findByNom("ADMIN")
+                .orElseGet(() -> roleRepository.save(new RoleType("ADMIN")));
+
+        // Rechercher les utilisateurs avec le rôle ADMIN
+        List<Utilisateur> admins = utilisateurRepository.findByRoleType(adminRole);
+
         if (admins.isEmpty()) {
-            Admin admin = new Admin("admin", passwordEncoder.encode("admin"));
+            Admin admin = new Admin("admin", passwordEncoder.encode("admin"), adminRole);
             utilisateurRepository.save(admin);
         }
     }
 }
+

@@ -23,7 +23,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AdminController {
 
-    @Autowired
+
     private UtilisateurService utilisateurService;
 
     @Autowired
@@ -152,21 +152,21 @@ public class AdminController {
             personnel.setAdmin(admin);
 
             // Vérifiez que l'email est présent
-            if (personnel.getEmail() == null || personnel.getEmail().isEmpty()) {
-                throw new IllegalArgumentException("L'email ne peut pas être vide.");
-            }
+//            if (personnel.getEmail() == null || personnel.getEmail().isEmpty()) {
+//                throw new IllegalArgumentException("L'email ne peut pas être vide.");
+//            }
 
             // Créer le personnel
             Personnel createdPersonnel = (Personnel) utilisateurService.ajouterPersonnel(personnel);
 
-            System.out.println("Email du personnel créé : " + createdPersonnel.getEmail());
-
-            // Envoi de l'e-mail de confirmation
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(createdPersonnel.getEmail());
-            message.setSubject("Compte créé avec succès");
-            message.setText("Bonjour, votre compte a été créé avec succès. Vos identifiants sont:\nUsername: " + createdPersonnel.getUsername() + "\nMot de passe: " + createdPersonnel.getMotDePasse());
-            mailSender.send(message);
+//            System.out.println("Email du personnel créé : " + createdPersonnel.getEmail());
+//
+//            // Envoi de l'e-mail de confirmation
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setTo(createdPersonnel.getEmail());
+//            message.setSubject("Compte créé avec succès");
+//            message.setText("Bonjour, votre compte a été créé avec succès. Vos identifiants sont:\nUsername: " + createdPersonnel.getUsername() + "\nMot de passe: " + createdPersonnel.getMotDePasse());
+//            mailSender.send(message);
 
             return ResponseEntity.ok(createdPersonnel);
         } catch (Exception e) {

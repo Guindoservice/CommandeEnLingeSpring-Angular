@@ -86,13 +86,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur admin = utilisateurRepository.findByUsername(adminUsername)
                 .orElseThrow(() -> new RuntimeException("Administrateur non trouvé avec le nom d'utilisateur : " + adminUsername));
 
-        // Vérifier que l'email et le mot de passe sont non nuls et non vides
-        if (personnel.getEmail() == null || personnel.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("L'email ne peut pas être vide.");
-        }
-        if (personnel.getMotDePasse() == null || personnel.getMotDePasse().isEmpty()) {
-            throw new IllegalArgumentException("Le mot de passe ne peut pas être vide.");
-        }
+//        // Vérifier que l'email et le mot de passe sont non nuls et non vides
+//        if (personnel.getEmail() == null || personnel.getEmail().isEmpty()) {
+//            throw new IllegalArgumentException("L'email ne peut pas être vide.");
+//        }
+//        if (personnel.getMotDePasse() == null || personnel.getMotDePasse().isEmpty()) {
+//            throw new IllegalArgumentException("Le mot de passe ne peut pas être vide.");
+//        }
 
         try {
             // Assigner le rôle par défaut

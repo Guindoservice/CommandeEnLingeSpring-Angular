@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name="personnel")
 public class Personnel extends Utilisateur {
 
-    private String email;
+//    private String email;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
